@@ -2,7 +2,7 @@ from rest_framework import generics
 
 from .models import Question, Choice
 
-from django.contrib.auth.models import User
+from accounts.models import User
 from .serializers import QuestionSerializer, ChoiceSerializer, UserSerializer
 
 class QuestionList(generics.ListCreateAPIView):

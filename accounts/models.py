@@ -1,13 +1,14 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.conf import settings
-from django.contrib.auth.models import PermissionsMixin
-from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import (
+    AbstractBaseUser, PermissionsMixin
+)
 from django.core.mail import send_mail
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.authtoken.models import Token
-from .managers import UserManager
+from .managers import CustomUserManager
 
 class User(AbstractBaseUser, PermissionsMixin):
     '''
@@ -20,7 +21,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(_('active'), default=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
 
-    objects = UserManager()
+    objects = CustomUserManager()
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email',]
@@ -53,6 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         Sends an email tho this User
         '''
         send_mail(subject, message, from_email, [self.email], *kwargs)
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
