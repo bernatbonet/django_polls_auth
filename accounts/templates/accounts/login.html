@@ -17,6 +17,9 @@ Password: <input type='password' name='password' id='password' />
         var token = data["token"];
         document.cookie = 'token='+token+";path=/";
         window.location.href = "/polls/";
+      })
+      .error(function(error) {
+        console.log(error);
       });
   });
 </script>
