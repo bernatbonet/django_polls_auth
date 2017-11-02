@@ -19,6 +19,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
     date_joined = models.DateField(_('date joined'), auto_now_add=True)
     is_active = models.BooleanField(_('active'), default=True)
+    is_staff = models.BooleanField(_('staff'), default=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
 
     objects = CustomUserManager()
@@ -62,7 +63,8 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
     Create user token object
     '''
     if created:
-        Token.objects.create(user=instance, **kwargs)
+        print 'inside - creating token'
+        Token.objects.create(user=instance)
 
 # chris 5674e8d0c9408476f8b89dee85d4e08003649cfa
 # bob 667594d84815c46eea4c38eb9a686010a1e1db66
